@@ -7,6 +7,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -112,5 +113,39 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => __($status)], 200);
+    }
+
+    /**
+     * Send verification email
+     */
+    public function sendVerificationEmail(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => 'Already verified.'
+            ], 200);
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return response()->json(['message' => 'Verification link sent!'], 200);
+    }
+
+    /**
+     * Verify the email
+     */
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json([
+                'message' => 'Already verified.'
+            ], 200);
+        }
+
+        $request->fulfill();
+
+        return response()->json([
+            'message' => 'Email has been verified'
+        ], 200);
     }
 }
