@@ -26,6 +26,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
             'auth_token' => $token,
             'user'       => new UserResource($user)
@@ -41,11 +42,23 @@ class AuthController extends Controller
         $inputs = $request->validated();
 
         $user = User::create($inputs);
-
         $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
             'auth_token' => $token,
             'user'       => new UserResource($user)
+        ], 200);
+    }
+
+    /**
+     * Logout a user
+     */
+    public function logout()
+    {
+        request()->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Logged out'
         ], 200);
     }
 }
