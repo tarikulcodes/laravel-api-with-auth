@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\PasswordResetLinkNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,5 +60,15 @@ class User extends Authenticatable
             ->generateSlugsFrom('name')
             ->doNotGenerateSlugsOnUpdate()
             ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new PasswordResetLinkNotification($token));
     }
 }
