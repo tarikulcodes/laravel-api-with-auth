@@ -148,4 +148,12 @@ class AuthController extends Controller
             'message' => 'Email has been verified'
         ], 200);
     }
+
+    /**
+     * Get the logged in user
+     */
+    public function user(Request $request)
+    {
+        return new UserResource($request->user());
+    }
 }
