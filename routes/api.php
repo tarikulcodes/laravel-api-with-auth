@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -17,4 +18,5 @@ Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum')
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'role:Admin'])->group(function () {
     Route::apiResource('users', UserController::class);
+    Route::get('roles/names', [RoleController::class, 'names'])->name('roles.names');
 });
