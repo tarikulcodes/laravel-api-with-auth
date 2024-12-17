@@ -86,6 +86,16 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
      * The roles that belong to the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
