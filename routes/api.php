@@ -28,3 +28,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'role:Admin'
     Route::apiResource('users', UserController::class);
     Route::get('roles/names', [RoleController::class, 'names'])->name('roles.names');
 });
+
+
+Route::get('/test', function () {
+    return response()->json([
+        'message' => 'Test script'
+    ], 200);
+});
